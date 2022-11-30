@@ -10,8 +10,9 @@ def find_obrez():
         for num, line in enumerate(myFile, 1):
             if lookup  in line:
                 print(line)
+                return 0
 
 
 
 if __name__ == "__main__":
-    print(find_obrez())
+    find_obrez()
