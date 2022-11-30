@@ -2,6 +2,8 @@ from PyPDF2 import PdfReader, PdfWriter
 from PyPDF2.generic import RectangleObject
 
 
+
+
 if __name__ == "__main__":
     reader = PdfReader("3.pdf")
     page = reader.pages[0]
