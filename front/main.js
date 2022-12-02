@@ -1,16 +1,20 @@
-document.getElementById("filepicker").addEventListener("change", (event) => {
-
-    var jsonfile = require('jsonfile');
-
-
-    for (const file of event.target.files) {
-        let item = document.createElement("li");
-        item.textContent = file.webkitRelativePath;
-        console.log(item);
-
-    };
-    jsonfile.writeFile('loop.json', item);
+const output = document.getElementById('output');
+const filepicker = document.getElementById('filepicker');
 
 
 
-}, false);
+filepicker.addEventListener('change', (event) => {
+    const files = event.target.files;
+
+    for (const file of files) {
+        output.textContent += "C:/" + `${file.webkitRelativePath}\n`;
+
+    }
+
+    var userInput = output.textContent;
+    run_txt(userInput);
+});
+
+async function run_txt(userInput) {
+    await eel.run_txt(userInput)();
+}
