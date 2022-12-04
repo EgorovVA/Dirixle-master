@@ -12,9 +12,9 @@ filepicker.addEventListener('change', (event) => {
     }
 
     var userInput = output.textContent;
-    run_txt(userInput);
+    start(userInput);
 });
 
-async function run_txt(userInput) {
-    await eel.run_txt(userInput)();
+async function start(userInput) {
+    await eel.get_txt(userInput)();
 }
