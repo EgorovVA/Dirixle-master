@@ -1,7 +1,7 @@
 from PyPDF2 import PdfReader, PdfWriter
 from PyPDF2.generic import RectangleObject
 
-def pars_size(file,size_square):#+drop return get_size_square
+def pars_size(file,size_square,offer,nameparsfile):#+drop return get_size_square
     reader = PdfReader(file)
     page = reader.pages[0]
     writer = PdfWriter()
@@ -22,12 +22,12 @@ def pars_size(file,size_square):#+drop return get_size_square
     #print(width,width_square,y)
     page.mediabox =  RectangleObject((
     page.mediabox.left+int(x),
-    page.mediabox.bottom +int(y+105),
+    page.mediabox.bottom +int(y+offer),
     page.mediabox.right -int( width - width_square - x + 10),
     page.mediabox.top-int(height-height_square-y+5),
     ))
     writer.add_page(page)
-    with open("pars_size.pdf", "wb") as fp:
+    with open(nameparsfile, "wb") as fp:
         writer.write(fp)
     
 
