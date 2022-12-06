@@ -27,7 +27,7 @@ def pars_size(file,size_square):#+drop return get_size_square
     page.mediabox.top-int(height-height_square-y+5),
     ))
     writer.add_page(page)
-    with open("bagage/pars_size.pdf", "wb") as fp:
+    with open("pars_size.pdf", "wb") as fp:
         writer.write(fp)
     
 
@@ -38,7 +38,7 @@ def get_size_square():# 0 - height, 1 - width, 2 - x, 3 - y
     line_with_platelshik = 0
     count_platelshik=0
     line = ""                  
-    with open("bagage/GeoBase_test.svg", encoding="utf8") as myFile:
+    with open("GeoBase_test.svg", encoding="utf8") as myFile:
         for num, line in enumerate(myFile, 1):
             if lookup  in line:
                 #print(line)

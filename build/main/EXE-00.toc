@@ -3,7 +3,8 @@
  True,
  False,
  True,
- 'C:\\Users\\vlade\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\bootloader\\images\\icon-console.ico',
+ ['C:\\Users\\vlade\\Downloads\\Мусор '
+  'яндекс\\Dirixle-master\\Dirixle-master\\i.ico'],
  None,
  False,
  False,
@@ -68,7 +69,7 @@
  [],
  False,
  False,
- 1670280696,
+ 1670350712,
  [('run.exe',
    'C:\\Users\\vlade\\AppData\\Roaming\\Python\\Python310\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\run.exe',
    'EXECUTABLE')])

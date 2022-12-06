@@ -65,29 +65,7 @@ def rename_file(text):
             else:
                 return ""
 
-   
-
-def opredeleniye_nomera(number,name):
-    #print(name, number)
-    if number == 1:
-
-        if path.exists("c:\out_pdf+"):
-            shutil.move(name,'c:\out_pdf+/'+name)
-        else:
-            os.mkdir("c:\out_pdf+")
-            #print("Создал папку")
-            shutil.move(name,'c:\out_pdf+/'+name)
-            
-    if number == 2 or number == 3:
-        if path.exists("c:\out_png"):
-            shutil.move(name,'c:\out_png/'+name)
-        else:
-            os.mkdir("c:\out_png")
-            #print("Создал папку")
-            shutil.move(name,'c:\out_png/'+name)  
-     
-
-        
+          
 
 def start_find(file, name_file):
     reader = PdfReader(file)
@@ -95,21 +73,34 @@ def start_find(file, name_file):
     a = page.extract_text(visitor_text=visitor_body)
     text = a.split("\n")
     number_plat = search_plat(text)
-    if rename_file(text) == "":
+    if rename_file(text) == "" or number_plat == 0:
         if path.exists("c:\out_error"):
-            shutil.move("bagage/pars_size.pdf",'c:\out_error/'+ name_file+ '.pdf')
+            shutil.move("pars_size.pdf",'c:\out_error/'+ name_file+ '.pdf')
             return
         else:
             os.mkdir("c:\out_error")
             #print("Создал папку")
-            shutil.move("bagage/pars_size.pdf",'c:\out_error/'+ name_file+ '.pdf')
+            shutil.move("pars_size.pdf",'c:\out_error/'+ name_file+ '.pdf')
             return
-    else:
-        name =  (name_file+"_"+rename_file(text) + '.png')
-    #os.rename('pars_size.pdf',name)
-    images = convert_from_path('bagage/pars_size.pdf', 500,poppler_path = r"poppler-22.12.0\Library\bin")
-    for image in images:
-        image.save(name)
-    opredeleniye_nomera(number_plat,name)
-    
+        
+    if number_plat == 1:
+        name =  (name_file+"_"+rename_file(text) + '.pdf')
+        if path.exists("c:\out_pdf+"):
+            shutil.move("pars_size.pdf",'c:\out_pdf+/'+name)
+        else:
+            os.mkdir("c:\out_pdf+")
+            #print("Создал папку")
+            shutil.move("pars_size.pdf",'c:\out_pdf+/'+name)
+            
+    if number_plat == 2 or number_plat == 3:
+        name =  (name_file+"_"+rename_file(text) + '.jpg')
+        images = convert_from_path('pars_size.pdf', 500,poppler_path = r"poppler-22.12.0\Library\bin")
+        for image in images:
+            image.save(name)
+        if path.exists("c:\out_png"):
+            shutil.move(name,'c:\out_png/'+name)
+        else:
+            os.mkdir("c:\out_png")
+            #print("Создал папку")
+            shutil.move(name,'c:\out_png/'+name)  
     

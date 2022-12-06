@@ -17,10 +17,11 @@ def visitor_svg_text(text, cm, tm, fontDict, fontSize):
 
 
 def extract(str_js):
-    back.runner.dwg = svgwrite.Drawing("bagage/GeoBase_test.svg", profile="tiny")
+    back.runner.dwg = svgwrite.Drawing("GeoBase_test.svg", profile="tiny")
     reader = PdfReader(str_js)
     page = reader.pages[0]
     page.extract_text(
     visitor_operand_before=visitor_svg_rect, visitor_text=visitor_svg_text
     )
+    
     back.runner.dwg.save()
