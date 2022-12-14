@@ -38,15 +38,21 @@ def parsfile(file):
 
 @eel.expose
 def get_txt(str_js):
-
+    if path.exists("c:\out_pdf+"):
+        shutil.rmtree("c:/out_pdf+")
+    if path.exists("c:\out_png"):
+        shutil.rmtree("c:/out_png")
+    if path.exists("c:\out_error"):
+        shutil.rmtree("c:/out_error")
     
     mass_str = str_js.split('\n')
 
     
     for i in range(len(mass_str)-1):
-        mass_str_name= str(mass_str[i].replace("C:/in_pdf/", ''))
+        mass_str_name= str(mass_str[i].replace("C:/", ''))
         mass_str_name= str(mass_str_name.replace(".pdf", ''))
         mass_str_name= str(mass_str_name.replace(" ", ''))
+        mass_str_name = mass_str_name.split('/')[1]
         a = parsfile(mass_str[i])
         if a == 0:
             if path.exists("c:\out_error"):
@@ -60,7 +66,8 @@ def get_txt(str_js):
         else:
             extract(mass_str[i])
             size_square = get_size_square()
-            pars_size(mass_str[i],size_square)
+            pars_size(mass_str[i],size_square,0,"pars_size_offer.pdf")
+            pars_size(mass_str[i],size_square,105,"pars_size.pdf")#либо 0 либо 105
             start_find(mass_str[i],mass_str_name)
     mass_str = []
    

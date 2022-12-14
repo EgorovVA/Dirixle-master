@@ -73,6 +73,7 @@ def start_find(file, name_file):
     a = page.extract_text(visitor_text=visitor_body)
     text = a.split("\n")
     number_plat = search_plat(text)
+    file_name = name_file
     if rename_file(text) == "" or number_plat == 0:
         if path.exists("c:\out_error"):
             shutil.move("pars_size.pdf",'c:\out_error/'+ name_file+ '.pdf')
@@ -82,18 +83,31 @@ def start_find(file, name_file):
             #print("Создал папку")
             shutil.move("pars_size.pdf",'c:\out_error/'+ name_file+ '.pdf')
             return
-        
+    if name_file.find("ЭР_") == -1:
+        s = ""
+        for line in text:
+            if line.find("№") !=-1:
+            #print(line)
+                for i in range(1,len(line)):
+                    s+=line[i]
+                    if line[i] == " " or line[i] == "о":
+                        break
+                break 
+        file_name = "ЭР_"+s
     if number_plat == 1:
-        name =  (name_file+"_"+rename_file(text) + '.pdf')
+        name =  (file_name+" "+rename_file(text) + '.pdf')
+        nameoffer = (file_name+" "+rename_file(text) + "_" + '.pdf')
         if path.exists("c:\out_pdf+"):
             shutil.move("pars_size.pdf",'c:\out_pdf+/'+name)
+            shutil.move("pars_size_offer.pdf",'c:\out_pdf+/'+nameoffer)
         else:
             os.mkdir("c:\out_pdf+")
             #print("Создал папку")
             shutil.move("pars_size.pdf",'c:\out_pdf+/'+name)
+            shutil.move("pars_size_offer.pdf",'c:\out_pdf+/'+nameoffer)
             
     if number_plat == 2 or number_plat == 3:
-        name =  (name_file+"_"+rename_file(text) + '.jpg')
+        name =  (file_name+" "+rename_file(text) + '.jpg')
         images = convert_from_path('pars_size.pdf', 500,poppler_path = r"poppler-22.12.0\Library\bin")
         for image in images:
             image.save(name)
