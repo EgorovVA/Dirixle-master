@@ -1,9 +1,28 @@
 from PyPDF2 import PdfReader, PdfWriter
 from PyPDF2.generic import RectangleObject
 
+parts = []
+
+def lolka(text, cm, tm, fontDict, fontSize):
+    y = tm[5]
+    parts.clear
+    parts.append(text)
+
+def index_containing_substring(the_list, substring):
+    for i, s in enumerate(the_list):
+        if substring in s:
+              return i
+    return -1
+
 def pars_size(file,size_square,offer,nameparsfile):#+drop return get_size_square
     reader = PdfReader(file)
     page = reader.pages[0]
+
+    a = page.extract_text(visitor_text=lolka)
+    text = a.split("\n")
+    del text[0: int(index_containing_substring(text, '№ Услуга Сумма Количество Показатель Мест'))+1]; 
+    del text[ int(index_containing_substring(text, 'Сдал Принял'))-1:len(text)]; 
+      
     writer = PdfWriter()
     if size_square[1] > 400:
         width_square = (size_square[1]/2)-5
@@ -21,9 +40,9 @@ def pars_size(file,size_square,offer,nameparsfile):#+drop return get_size_square
     height = int(float(page.mediaBox.getHeight()))#595 for 3.pdf
     #print(width,width_square,y)
     page.mediabox =  RectangleObject((
-    page.mediabox.left+int(x),
-    page.mediabox.bottom +int(y+offer),
-    page.mediabox.right -int( width - width_square - x + 10),
+    page.mediabox.left+int(x+2),
+    page.mediabox.bottom +int(y+offer-int(text[len(text)-1][0])+4),
+    page.mediabox.right -int( width - width_square - x + 12),
     page.mediabox.top-int(height-height_square-y+5),
     ))
     writer.add_page(page)
