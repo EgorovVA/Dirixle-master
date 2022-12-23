@@ -14,6 +14,38 @@ def index_containing_substring(the_list, substring):
               return i
     return -1
 
+def text_of_num(text):
+    num = []
+    count =""
+    arrtmpnum = []
+    tmpnum =""
+
+    for i in range(len(text)):
+        text[i] = text[i].replace(text[i][0],'',1)
+        if text[i].find("Забор груза от клиента")!= -1 or text[i].find("Возврат СД")!= -1 or text[i].find("Отправка СД")!= -1 or text[i].find("Разбор упаковки на адресе получателя")!= -1:
+            text[i] = ''
+    
+    for i in range(len(text)):
+        
+        for j in range(len(text[i])):
+            if text[i][j] >= '0' and  text[i][j] <= '9':
+                while text[i][j] != ',':
+                    count+=text[i][j]
+                    j+=1
+                count+=text[i][j]
+                count+=text[i][j+1]
+                count+=text[i][j+2]
+                num.append(count)
+                count =""
+                break
+    return num
+
+            
+
+
+
+    print(str(num))
+
 def pars_size(file,size_square,offer,nameparsfile):#+drop return get_size_square
     reader = PdfReader(file)
     page = reader.pages[0]
@@ -21,8 +53,9 @@ def pars_size(file,size_square,offer,nameparsfile):#+drop return get_size_square
     a = page.extract_text(visitor_text=lolka)
     text = a.split("\n")
     del text[0: int(index_containing_substring(text, '№ Услуга Сумма Количество Показатель Мест'))+1]; 
-    del text[ int(index_containing_substring(text, 'Сдал Принял'))-1:len(text)]; 
-      
+    del text[ int(index_containing_substring(text, 'Сдал Принял')):len(text)]; 
+    
+    
     writer = PdfWriter()
     if size_square[1] > 400:
         width_square = (size_square[1]/2)-5
@@ -41,14 +74,48 @@ def pars_size(file,size_square,offer,nameparsfile):#+drop return get_size_square
     #print(width,width_square,y)
     page.mediabox =  RectangleObject((
     page.mediabox.left+int(x+2),
-    page.mediabox.bottom +int(y+offer-int(text[len(text)-1][0])+4),
+    page.mediabox.bottom +int(y+offer-int(text[len(text)-2][0])+4),
     page.mediabox.right -int( width - width_square - x + 12),
     page.mediabox.top-int(height-height_square-y+5),
     ))
+    #text_of_num(text)
+    seach_number(text)
     writer.add_page(page)
     with open(nameparsfile, "wb") as fp:
         writer.write(fp)
     
+
+def seach_number(text):
+    koordinats = []
+    index = 0
+    coord_x_y =[]
+    x = ""
+    y = ""
+    a = text_of_num(text)
+    with open("GeoBase_test.svg", encoding="utf8") as myFile:
+        for num, line in enumerate(myFile, 1):
+            for i in range(len(a)):
+                if " " + a[i] in line:
+                    index = line.find(a[i])-4
+                    while line[index] != "\42":
+                        y = line[index]+y
+                        index -=1
+                    
+                    
+                    while line[index-5] != "\42":
+                        x = line[index-5]+x
+                        index -=1
+                    
+                    print(line,a[i])
+                    coord_x_y.append([x,y])
+
+                    x = ""
+                    y = ""
+
+        print(coord_x_y)
+    
+                
+
 
 def get_size_square():# 0 - height, 1 - width, 2 - x, 3 - y 
     height = 0
