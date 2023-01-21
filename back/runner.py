@@ -24,6 +24,8 @@ def parsfile(file):
     a = page.extract_text(visitor_text=visitor_body)
     text = a.split("\n")   
     for line in text:
+        if line.find("Беларусь") > 0:
+            return 0
         if line.find("ЗАЯВКА КЛИЕНТА")!= -1: 
             #print(line)        
             a = line.replace(" ",'')
@@ -33,6 +35,7 @@ def parsfile(file):
                 return 0
         else:
             return 0
+        
 
 
 
@@ -66,11 +69,11 @@ def get_txt(str_js):
         else:
             extract(mass_str[i])
             size_square = get_size_square()
-            pars_size(mass_str[i],size_square,0,"pars_size_offer.pdf")
+            coord, num_write = pars_size(mass_str[i],size_square,0,"pars_size_offer.pdf")
             pars_size(mass_str[i],size_square,105,"pars_size.pdf")#либо 0 либо 105
-            start_find(mass_str[i],mass_str_name)
+            start_find(mass_str[i],mass_str_name,coord, num_write)
     mass_str = []
-   
+    os.remove('C:/out_pdf+/1.jpg')
     #print("КОНЕЦ")
 
 

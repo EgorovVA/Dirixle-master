@@ -17,34 +17,40 @@ def index_containing_substring(the_list, substring):
 def text_of_num(text):
     num = []
     count =""
-    arrtmpnum = []
-    tmpnum =""
 
+
+  
     for i in range(len(text)):
-        text[i] = text[i].replace(text[i][0],'',1)
+        if text[i]!='':
+            text[i] = text[i].replace(text[i][0],'',1)
+        
         if text[i].find("Забор груза от клиента")!= -1 or text[i].find("Возврат СД")!= -1 or text[i].find("Отправка СД")!= -1 or text[i].find("Разбор упаковки на адресе получателя")!= -1:
-            text[i] = ''
+            text[i] = ' '
+
+
     
     for i in range(len(text)):
-        
-        for j in range(len(text[i])):
-            if text[i][j] >= '0' and  text[i][j] <= '9':
-                while text[i][j] != ',':
+        if text[i]==' ':
+            num.append(-1)
+        else:
+            for j in range(len(text[i])):
+                if text[i][j] >= '0' and  text[i][j] <= '9':
+                    while text[i][j] != ',':
+                        count+=text[i][j]
+                        j+=1
                     count+=text[i][j]
-                    j+=1
-                count+=text[i][j]
-                count+=text[i][j+1]
-                count+=text[i][j+2]
-                num.append(count)
-                count =""
-                break
+                    count+=text[i][j+1]
+                    count+=text[i][j+2]
+                    num.append(count)
+                    count =""
+                    break
     return num
 
             
 
 
 
-    print(str(num))
+
 
 def pars_size(file,size_square,offer,nameparsfile):#+drop return get_size_square
     reader = PdfReader(file)
@@ -68,21 +74,23 @@ def pars_size(file,size_square,offer,nameparsfile):#+drop return get_size_square
         y = size_square[3]
         height_square = size_square[0]
     
-    
     width = int(float(page.mediaBox.getWidth()))#841 for 3.pdf
     height = int(float(page.mediaBox.getHeight()))#595 for 3.pdf
-    #print(width,width_square,y)
+    print("высота ширина",width_square,height_square)
     page.mediabox =  RectangleObject((
     page.mediabox.left+int(x+2),
     page.mediabox.bottom +int(y+offer-int(text[len(text)-2][0])+4),
     page.mediabox.right -int( width - width_square - x + 12),
     page.mediabox.top-int(height-height_square-y+5),
     ))
-    #text_of_num(text)
-    seach_number(text)
+    num_write = text_of_num(text)
+    coord = seach_number(text)
+
     writer.add_page(page)
     with open(nameparsfile, "wb") as fp:
         writer.write(fp)
+    print("координаты",coord)
+    return coord, num_write
     
 
 def seach_number(text):
@@ -106,13 +114,13 @@ def seach_number(text):
                         x = line[index-5]+x
                         index -=1
                     
-                    print(line,a[i])
+                    #print(line,a[i])
                     coord_x_y.append([x,y])
 
                     x = ""
                     y = ""
 
-        print(coord_x_y)
+        return coord_x_y
     
                 
 
